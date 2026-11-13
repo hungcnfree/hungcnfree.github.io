@@ -1,0 +1,93 @@
+[
+  {
+    "id": "b5cn8",
+    "name": "Bản vẽ nhà – Nhiệm vụ Thợ nhện",
+    "lesson": "Bài 5 · Công nghệ 8",
+    "grade": "8",
+    "category": "Bài giảng E-learning",
+    "icon": "🕷️",
+    "badge": "Chuẩn SGK",
+    "color": "#0ea5e9",
+    "desc": "Bài giảng E-learning 15 slide chuẩn SGK Kết nối tri thức. Học sinh đồng hành cùng Thợ nhện giải mã các ký hiệu quy ước và thực hành đọc bản vẽ nhà hoàn chỉnh.",
+    "path": "https://hungcnfree.github.io/b5cn8/",
+    "tags": ["bản vẽ nhà", "thợ nhện", "kết nối tri thức", "e-learning", "lớp 8", "slide"]
+  },
+  {
+    "id": "b4cn8",
+    "name": "Kỹ sư lắp ráp tập sự – Bản vẽ lắp",
+    "lesson": "Bài 4 · Công nghệ 8",
+    "grade": "8",
+    "category": "Trò chơi học tập",
+    "icon": "🛠️",
+    "badge": "Game tương tác",
+    "color": "#10b981",
+    "desc": "Trò chơi nhập vai kỹ sư cơ khí tập sự; giúp học sinh nắm vững quy trình đọc bản vẽ lắp và thao tác thứ tự tháo – lắp cụm chi tiết cơ khí trực quan.",
+    "path": "https://hungcnfree.github.io/b4cn8/",
+    "tags": ["bản vẽ lắp", "kỹ sư tập sự", "cơ khí", "lắp ráp", "trò chơi", "lớp 8"]
+  },
+  {
+    "id": "b3cn8",
+    "name": "Thợ cơ khí tập sự – Bản vẽ chi tiết",
+    "lesson": "Bài 3 · Công nghệ 8",
+    "grade": "8",
+    "category": "Trò chơi học tập",
+    "icon": "📐",
+    "badge": "Thực hành ảo",
+    "color": "#f59e0b",
+    "desc": "Thử thách nhập vai thợ cơ khí tìm hiểu 4 nội dung cốt lõi của bản vẽ chi tiết: khung tên, hình biểu diễn, kích thước và yêu cầu kỹ thuật gia công.",
+    "path": "https://hungcnfree.github.io/b3cn8/",
+    "tags": ["bản vẽ chi tiết", "thợ cơ khí", "kích thước", "khung tên", "lớp 8"]
+  },
+  {
+    "id": "b2_cn8",
+    "name": "Viewer 3D – Hình chiếu vuông góc",
+    "lesson": "Bài 2 · Công nghệ 8",
+    "grade": "8",
+    "category": "Viewer 3D & Mô phỏng",
+    "icon": "🧊",
+    "badge": "Mô hình 3D",
+    "color": "#8b5cf6",
+    "desc": "Mô hình vật thể 3D đa chiều tương tác trực tiếp; giúp học sinh dễ dàng quan sát, liên hệ và đối chiếu các hướng chiếu đứng, bằng và cạnh trong không gian.",
+    "path": "https://hungcnfree.github.io/b2_cn8/",
+    "tags": ["hình chiếu", "3D", "vẽ kỹ thuật", "hình chiếu đứng", "lớp 8"]
+  },
+  {
+    "id": "b3cn9",
+    "name": "Thí nghiệm ảo – Thiết kế mạng điện",
+    "lesson": "Bài 3 · Công nghệ 9",
+    "grade": "9",
+    "category": "Thí nghiệm ảo",
+    "icon": "💡",
+    "badge": "Mô phỏng điện",
+    "color": "#ec4899",
+    "desc": "Phòng thực hành ảo vẽ sơ đồ và chạy thử nghiệm mạng điện gia đình: aptomat, cầu chì, công tắc, bóng đèn; mô phỏng bật/tắt và kiểm tra an toàn điện.",
+    "path": "https://hungcnfree.github.io/b3cn9/",
+    "tags": ["mạch điện", "thí nghiệm ảo", "sơ đồ nguyên lý", "an toàn điện", "lớp 9"]
+  },
+  {
+    "id": "b5cn9",
+    "name": "Tính toán chi phí mạng điện trong nhà",
+    "lesson": "Bài 5 · Công nghệ 9",
+    "grade": "9",
+    "category": "Bài giảng E-learning",
+    "icon": "⚡",
+    "badge": "Bảng tính thông minh",
+    "color": "#3b82f6",
+    "desc": "Bài giảng điện tử sư phạm kèm bảng tính tự động; học sinh tự lựa chọn danh mục thiết bị, điền đơn giá thị trường và lập dự toán chi phí lắp đặt mạng điện.",
+    "path": "https://hungcnfree.github.io/b5cn9/",
+    "tags": ["chi phí mạng điện", "dự toán", "bảng tính", "e-learning", "lớp 9"]
+  },
+  {
+    "id": "chamtracnghiem",
+    "name": "Chấm trắc nghiệm bằng Camera",
+    "lesson": "Công nghệ 6, 7, 8, 9",
+    "grade": "gv",
+    "category": "Công cụ tiện ích",
+    "icon": "📷",
+    "badge": "Tiện ích số",
+    "color": "#6366f1",
+    "desc": "Tiện ích thông minh dành cho giáo viên và học sinh; quét và chấm phiếu thi trắc nghiệm trực tiếp qua camera máy tính hoặc điện thoại, tính điểm siêu tốc.",
+    "path": "https://hungcnfree.github.io/chamtracnghiem/",
+    "tags": ["chấm bài", "camera", "trắc nghiệm", "giáo viên", "tiện ích", "thông minh"]
+  }
+]

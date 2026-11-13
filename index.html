@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Công Nghệ Vui — Thầy Nông Văn Hùng | THCS Đăk Ơ</title>
+  <meta name="description" content="Cổng học tập và trải nghiệm tương tác môn Công nghệ THCS (Lớp 8, Lớp 9) - Thầy Nông Văn Hùng, Trường THCS Đăk Ơ.">
+  <meta name="author" content="Thầy Nông Văn Hùng">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-head: 'Quicksand', system-ui, -apple-system, sans-serif;
+      
+      /* Light theme (Tuổi hoa học trò) */
+      --bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 35%, #fef3c7 100%);
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --card-hover-border: #38bdf8;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-sub: #64748b;
+      
+      --brand-primary: #0284c7;
+      --brand-hover: #0369a1;
+      --brand-accent: #f59e0b;
+      --brand-rose: #f43f5e;
+      --brand-emerald: #10b981;
+      
+      --header-bg: rgba(255, 255, 255, 0.88);
+      --badge-bg: #e0f2fe;
+      --badge-text: #0369a1;
+      
+      --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 8px 24px rgba(14, 165, 233, 0.12);
+      --shadow-hover: 0 16px 32px rgba(14, 165, 233, 0.2);
+      
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #111827 100%);
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --card-hover-border: #38bdf8;
+      --text-main: #f8fafc;
+      --text-muted: #cbd5e1;
+      --text-sub: #94a3b8;
+      
+      --header-bg: rgba(30, 41, 59, 0.9);
+      --badge-bg: #0c4a6e;
+      --badge-text: #7dd3fc;
+      
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --shadow-hover: 0 16px 32px rgba(56, 189, 248, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Floating ambient symbols */
+    .ambient-symbols {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.35;
+    }
+    .sym {
+      position: absolute;
+      font-size: 26px;
+      animation: floatSlow 18s ease-in-out infinite alternate;
+      user-select: none;
+    }
+    @keyframes floatSlow {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-35px) rotate(20deg); }
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Top Navigation bar */
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 10px 0;
+      transition: all 0.3s ease;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .avatar-badge {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
+      flex-shrink: 0;
+    }
+    .brand-title {
+      font-family: var(--font-head);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--brand-primary);
+      line-height: 1.2;
+    }
+    .brand-school {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .theme-toggle-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .theme-toggle-btn:hover {
+      transform: scale(1.08);
+      border-color: var(--brand-primary);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 36px 0 28px;
+      text-align: center;
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--brand-primary);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+      animation: popIn 0.5s ease;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 40%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: clamp(15px, 2.5vw, 17.5px);
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 24px;
+      font-weight: 500;
+    }
+
+    /* Stats strip */
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .stat-chip {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-chip span.num {
+      color: var(--brand-primary);
+      font-weight: 800;
+    }
+
+    /* Search & Filter Controls */
+    .controls-wrapper {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 32px;
+    }
+    
+    .search-box {
+      position: relative;
+      margin-bottom: 18px;
+    }
+    .search-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 48px 0 48px;
+      font-family: inherit;
+      font-size: 16px;
+      background: var(--bg-gradient);
+      border: 2px solid var(--card-border);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.25s ease;
+    }
+    .search-input:focus {
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+      background: var(--card-bg);
+    }
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: var(--text-sub);
+      pointer-events: none;
+    }
+    .search-clear {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--text-sub);
+      cursor: pointer;
+      display: none;
+      padding: 6px;
+    }
+    .search-clear:hover {
+      color: var(--brand-rose);
+    }
+
+    /* Filter groups */
+    .filter-section {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      min-width: 90px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .pill-btn {
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--card-border);
+      background: var(--bg-gradient);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+    }
+    .pill-btn:hover {
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+      transform: translateY(-1px);
+    }
+    .pill-btn.active {
+      background: var(--brand-primary);
+      color: #ffffff;
+      border-color: var(--brand-primary);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+
+    .status-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--card-border);
+      font-size: 14px;
+      color: var(--text-sub);
+    }
+    .reset-btn {
+      background: none;
+      border: none;
+      color: var(--brand-primary);
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .reset-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* Projects Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 22px;
+      margin-bottom: 48px;
+    }
+
+    /* Project Card */
+    .project-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--card-hover-border);
+    }
+
+    /* Top color accent strip */
+    .card-accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+    }
+
+    .card-header-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      gap: 10px;
+    }
+    .card-icon-box {
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+    .card-badges {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+    .grade-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .grade-8 { background: #dcfce7; color: #15803d; }
+    .grade-9 { background: #ffedd5; color: #c2410c; }
+    .grade-gv { background: #ede9fe; color: #6d28d9; }
+
+    .category-tag {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-sub);
+      background: var(--bg-gradient);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--card-border);
+    }
+
+    .card-body {
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    .lesson-tag {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-primary);
+      margin-bottom: 6px;
+      display: inline-block;
+    }
+    .card-title {
+      font-family: var(--font-head);
+      font-size: 19.5px;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+    .card-desc {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Card Actions */
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--card-border);
+    }
+    .open-btn {
+      flex: 1;
+      height: 48px;
+      background: linear-gradient(135deg, var(--brand-primary), #0284c7);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 15.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    }
+    .open-btn:hover {
+      background: linear-gradient(135deg, #0369a1, #0284c7);
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+      transform: translateY(-2px);
+    }
+    .open-btn:active {
+      transform: translateY(0);
+    }
+
+    .share-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--bg-gradient);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .share-btn:hover {
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+      transform: scale(1.05);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 14.5px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Empty state */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 50px 20px;
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border: 2px dashed var(--card-border);
+    }
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+    .empty-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+    .empty-text {
+      color: var(--text-muted);
+      font-size: 14.5px;
+      margin-bottom: 16px;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      background: var(--header-bg);
+      border-top: 1px solid var(--card-border);
+      padding: 32px 0 24px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-brand {
+      font-family: var(--font-head);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--brand-primary);
+      margin-bottom: 6px;
+    }
+    .footer-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 16px;
+    }
+    .footer-school-tag {
+      display: inline-block;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .hero-section {
+        padding: 24px 0 20px;
+      }
+      .controls-wrapper {
+        padding: 16px;
+        margin-bottom: 24px;
+      }
+      .filter-label {
+        min-width: 100%;
+        margin-bottom: 4px;
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .project-card {
+        padding: 18px;
+      }
+      .card-title {
+        font-size: 18px;
+      }
+      .open-btn {
+        height: 46px;
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating ambient symbols -->
+  <div class="ambient-symbols">
+    <div class="sym" style="top: 8%; left: 6%;">📐</div>
+    <div class="sym" style="top: 16%; right: 8%;">⚙️</div>
+    <div class="sym" style="top: 38%; left: 4%;">💡</div>
+    <div class="sym" style="top: 55%; right: 5%;">🧊</div>
+    <div class="sym" style="top: 72%; left: 8%;">🛠️</div>
+    <div class="sym" style="top: 85%; right: 7%;">⚡</div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="nav-bar">
+    <div class="container nav-inner">
+      <a href="#" class="brand-group">
+        <div class="avatar-badge">👨‍🏫</div>
+        <div>
+          <div class="brand-title">CÔNG NGHỆ VUI</div>
+          <div class="brand-school">Thầy Nông Văn Hùng · THCS Đăk Ơ</div>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" title="Chuyển chế độ sáng/tối" aria-label="Toggle Theme">
+          🌙
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="container">
+    
+    <!-- Hero Section -->
+    <header class="hero-section">
+      <div class="hero-pill">
+        <span>🌸</span>
+        <span>Góc Học Tập & Trải Nghiệm Công Nghệ THCS</span>
+      </div>
+      <h1 class="hero-title">Khám Phá Kỹ Thuật · Sáng Tạo Tương Lai</h1>
+      <p class="hero-desc">
+        Chào mừng các em học sinh và Quý thầy cô đến với hệ thống bài giảng điện tử, trò chơi học tập, mô hình 3D và phòng thí nghiệm ảo môn Công nghệ.
+      </p>
+
+      <!-- Quick Stats -->
+      <div class="stats-row">
+        <div class="stat-chip">🚀 <span class="num" id="totalCountDisplay">7</span> Dự án tương tác</div>
+        <div class="stat-chip">📚 <span class="num">Khối 8 & 9</span> Chuẩn SGK</div>
+        <div class="stat-chip">🏫 Trường THCS Đăk Ơ</div>
+      </div>
+    </header>
+
+    <!-- Controls Wrapper (Search & Filters) -->
+    <section class="controls-wrapper">
+      
+      <!-- Search Input -->
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Tìm bài học, chủ đề (bản vẽ, lắp ráp, điện, 3D, trắc nghiệm...)"
+          autocomplete="off"
+        >
+        <button id="searchClearBtn" class="search-clear" title="Xóa tìm kiếm">✕</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-section">
+        
+        <!-- Grade Filter -->
+        <div class="filter-row">
+          <div class="filter-label">🎓 Khối học:</div>
+          <div class="pills-container" id="gradePills">
+            <button class="pill-btn active" data-grade="all">Tất cả</button>
+            <button class="pill-btn" data-grade="8">Lớp 8 (4)</button>
+            <button class="pill-btn" data-grade="9">Lớp 9 (2)</button>
+            <button class="pill-btn" data-grade="gv">Giáo viên (1)</button>
+          </div>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-row">
+          <div class="filter-label">🏷️ Phân nhóm:</div>
+          <div class="pills-container" id="categoryPills">
+            <button class="pill-btn active" data-category="all">Tất cả nhóm</button>
+            <button class="pill-btn" data-category="Trò chơi học tập">🎮 Trò chơi</button>
+            <button class="pill-btn" data-category="Bài giảng E-learning">📖 E-learning</button>
+            <button class="pill-btn" data-category="Viewer 3D & Mô phỏng">🧊 Viewer 3D</button>
+            <button class="pill-btn" data-category="Thí nghiệm ảo">💡 Thí nghiệm ảo</button>
+            <button class="pill-btn" data-category="Công cụ tiện ích">📷 Tiện ích</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Summary & Reset -->
+      <div class="status-summary">
+        <span id="resultCountText">Đang hiển thị 7 dự án</span>
+        <button id="resetFilterBtn" class="reset-btn">↺ Đặt lại bộ lọc</button>
+      </div>
+
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="projects-grid" id="projectsGrid">
+      <!-- Cards will be dynamically rendered here -->
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-brand">HỆ THỐNG HỌC LIỆU SỐ — CÔNG NGHỆ VUI</div>
+      <p class="footer-desc">
+        Xây dựng và phát triển nhằm hỗ trợ học sinh học tập chủ động, yêu thích kỹ thuật và rèn luyện kỹ năng thực hành công nghệ.
+      </p>
+      <div class="footer-school-tag">
+        🏫 Thầy Nông Văn Hùng · Giáo viên Công nghệ · Trường THCS Đăk Ơ
+      </div>
+      <div class="footer-copy">
+        Bản quyền nội dung học liệu © <span id="currentYear"></span> · THCS Đăk Ơ, Bù Gia Mập, Bình Phước
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">📋 Đã sao chép liên kết vào bộ nhớ tạm!</div>
+
+  <!-- Main JavaScript Logic -->
+  <script>
+    // Inlined fallback data ensuring 100% functionality even when offline (file:///)
+    const FALLBACK_PROJECTS = [
+      {
+        "id": "b5cn8",
+        "name": "Bản vẽ nhà – Nhiệm vụ Thợ nhện",
+        "lesson": "Bài 5 · Công nghệ 8",
+        "grade": "8",
+        "category": "Bài giảng E-learning",
+        "icon": "🕷️",
+        "badge": "Chuẩn SGK",
+        "color": "#0ea5e9",
+        "desc": "Bài giảng E-learning 15 slide chuẩn SGK Kết nối tri thức. Học sinh đồng hành cùng Thợ nhện giải mã các ký hiệu quy ước và thực hành đọc bản vẽ nhà hoàn chỉnh.",
+        "path": "https://hungcnfree.github.io/b5cn8/",
+        "tags": ["bản vẽ nhà", "thợ nhện", "kết nối tri thức", "e-learning", "lớp 8", "slide"]
+      },
+      {
+        "id": "b4cn8",
+        "name": "Kỹ sư lắp ráp tập sự – Bản vẽ lắp",
+        "lesson": "Bài 4 · Công nghệ 8",
+        "grade": "8",
+        "category": "Trò chơi học tập",
+        "icon": "🛠️",
+        "badge": "Game tương tác",
+        "color": "#10b981",
+        "desc": "Trò chơi nhập vai kỹ sư cơ khí tập sự; giúp học sinh nắm vững quy trình đọc bản vẽ lắp và thao tác thứ tự tháo – lắp cụm chi tiết cơ khí trực quan.",
+        "path": "https://hungcnfree.github.io/b4cn8/",
+        "tags": ["bản vẽ lắp", "kỹ sư tập sự", "cơ khí", "lắp ráp", "trò chơi", "lớp 8"]
+      },
+      {
+        "id": "b3cn8",
+        "name": "Thợ cơ khí tập sự – Bản vẽ chi tiết",
+        "lesson": "Bài 3 · Công nghệ 8",
+        "grade": "8",
+        "category": "Trò chơi học tập",
+        "icon": "📐",
+        "badge": "Thực hành ảo",
+        "color": "#f59e0b",
+        "desc": "Thử thách nhập vai thợ cơ khí tìm hiểu 4 nội dung cốt lõi của bản vẽ chi tiết: khung tên, hình biểu diễn, kích thước và yêu cầu kỹ thuật gia công.",
+        "path": "https://hungcnfree.github.io/b3cn8/",
+        "tags": ["bản vẽ chi tiết", "thợ cơ khí", "kích thước", "khung tên", "lớp 8"]
+      },
+      {
+        "id": "b2_cn8",
+        "name": "Viewer 3D – Hình chiếu vuông góc",
+        "lesson": "Bài 2 · Công nghệ 8",
+        "grade": "8",
+        "category": "Viewer 3D & Mô phỏng",
+        "icon": "🧊",
+        "badge": "Mô hình 3D",
+        "color": "#8b5cf6",
+        "desc": "Mô hình vật thể 3D đa chiều tương tác trực tiếp; giúp học sinh dễ dàng quan sát, liên hệ và đối chiếu các hướng chiếu đứng, bằng và cạnh trong không gian.",
+        "path": "https://hungcnfree.github.io/b2_cn8/",
+        "tags": ["hình chiếu", "3D", "vẽ kỹ thuật", "hình chiếu đứng", "lớp 8"]
+      },
+      {
+        "id": "b3cn9",
+        "name": "Thí nghiệm ảo – Thiết kế mạng điện",
+        "lesson": "Bài 3 · Công nghệ 9",
+        "grade": "9",
+        "category": "Thí nghiệm ảo",
+        "icon": "💡",
+        "badge": "Mô phỏng điện",
+        "color": "#ec4899",
+        "desc": "Phòng thực hành ảo vẽ sơ đồ và chạy thử nghiệm mạng điện gia đình: aptomat, cầu chì, công tắc, bóng đèn; mô phỏng bật/tắt và kiểm tra an toàn điện.",
+        "path": "https://hungcnfree.github.io/b3cn9/",
+        "tags": ["mạch điện", "thí nghiệm ảo", "sơ đồ nguyên lý", "an toàn điện", "lớp 9"]
+      },
+      {
+        "id": "b5cn9",
+        "name": "Tính toán chi phí mạng điện trong nhà",
+        "lesson": "Bài 5 · Công nghệ 9",
+        "grade": "9",
+        "category": "Bài giảng E-learning",
+        "icon": "⚡",
+        "badge": "Bảng tính thông minh",
+        "color": "#3b82f6",
+        "desc": "Bài giảng điện tử sư phạm kèm bảng tính tự động; học sinh tự lựa chọn danh mục thiết bị, điền đơn giá thị trường và lập dự toán chi phí lắp đặt mạng điện.",
+        "path": "https://hungcnfree.github.io/b5cn9/",
+        "tags": ["chi phí mạng điện", "dự toán", "bảng tính", "e-learning", "lớp 9"]
+      },
+      {
+        "id": "chamtracnghiem",
+        "name": "Chấm trắc nghiệm bằng Camera",
+        "lesson": "Công nghệ 6, 7, 8, 9",
+        "grade": "gv",
+        "category": "Công cụ tiện ích",
+        "icon": "📷",
+        "badge": "Tiện ích số",
+        "color": "#6366f1",
+        "desc": "Tiện ích thông minh dành cho giáo viên và học sinh; quét và chấm phiếu thi trắc nghiệm trực tiếp qua camera máy tính hoặc điện thoại, tính điểm siêu tốc.",
+        "path": "https://hungcnfree.github.io/chamtracnghiem/",
+        "tags": ["chấm bài", "camera", "trắc nghiệm", "giáo viên", "tiện ích", "thông minh"]
+      }
+    ];
+
+    let projects = [...FALLBACK_PROJECTS];
+    let selectedGrade = 'all';
+    let selectedCategory = 'all';
+    let searchQuery = '';
+
+    // DOM Elements
+    const grid = document.getElementById('projectsGrid');
+    const searchInput = document.getElementById('searchInput');
+    const searchClearBtn = document.getElementById('searchClearBtn');
+    const resultCountText = document.getElementById('resultCountText');
+    const resetFilterBtn = document.getElementById('resetFilterBtn');
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const toast = document.getElementById('toast');
+
+    // Load projects.json if available
+    async function loadProjectsData() {
+      try {
+        const res = await fetch('projects.json');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            projects = data;
+          }
+        }
+      } catch (e) {
+        console.log('Using fallback local projects data.');
+      }
+      renderCards();
+    }
+
+    // Render cards
+    function renderCards() {
+      const q = searchQuery.trim().toLowerCase();
+      
+      const filtered = projects.filter(item => {
+        // Grade filter
+        if (selectedGrade !== 'all' && item.grade !== selectedGrade) {
+          return false;
+        }
+        // Category filter
+        if (selectedCategory !== 'all' && item.category !== selectedCategory) {
+          return false;
+        }
+        // Search filter
+        if (q) {
+          const matchTitle = item.name.toLowerCase().includes(q);
+          const matchLesson = item.lesson.toLowerCase().includes(q);
+          const matchDesc = item.desc.toLowerCase().includes(q);
+          const matchTags = item.tags && item.tags.some(t => t.toLowerCase().includes(q));
+          if (!matchTitle && !matchLesson && !matchDesc && !matchTags) {
+            return false;
+          }
+        }
+        return true;
+      });
+
+      // Update count text
+      resultCountText.textContent = `Đang hiển thị ${filtered.length} / ${projects.length} dự án`;
+
+      // Empty state
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <div class="empty-title">Không tìm thấy bài học nào phù hợp</div>
+            <div class="empty-text">Thử tìm kiếm với từ khóa khác hoặc bấm đặt lại bộ lọc bên trên.</div>
+            <button class="open-btn" style="max-width: 220px; margin: 0 auto;" onclick="resetAllFilters()">Đặt lại bộ lọc</button>
+          </div>
+        `;
+        return;
+      }
+
+      // Render cards
+      grid.innerHTML = filtered.map(item => {
+        const gradeClass = item.grade === '8' ? 'grade-8' : (item.grade === '9' ? 'grade-9' : 'grade-gv');
+        const gradeText = item.grade === '8' ? 'Lớp 8' : (item.grade === '9' ? 'Lớp 9' : 'Giáo viên');
+        const cardColor = item.color || '#0284c7';
+        
+        return `
+          <article class="project-card" data-id="${item.id}">
+            <div class="card-accent-bar" style="background: ${cardColor};"></div>
+            
+            <div>
+              <div class="card-header-meta">
+                <div class="card-icon-box" style="background: color-mix(in srgb, ${cardColor} 15%, transparent); color: ${cardColor};">
+                  ${item.icon}
+                </div>
+                <div class="card-badges">
+                  <span class="grade-badge ${gradeClass}">${gradeText}</span>
+                  <span class="category-tag">${item.category}</span>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <div class="lesson-tag">${item.lesson}</div>
+                <h2 class="card-title">${item.name}</h2>
+                <p class="card-desc">${item.desc}</p>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <a href="${item.path}" target="_blank" rel="noopener noreferrer" class="open-btn" title="Mở ${item.name} trong tab mới">
+                <span>Vào học ngay</span>
+                <span>➔</span>
+              </a>
+              <button class="share-btn" onclick="copyProjectLink('${item.path}', '${item.name}')" title="Sao chép link chia sẻ">
+                🔗
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // Reset filters
+    function resetAllFilters() {
+      selectedGrade = 'all';
+      selectedCategory = 'all';
+      searchQuery = '';
+      searchInput.value = '';
+      searchClearBtn.style.display = 'none';
+
+      document.querySelectorAll('#gradePills .pill-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.grade === 'all');
+      });
+      document.querySelectorAll('#categoryPills .pill-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.category === 'all');
+      });
+
+      renderCards();
+    }
+
+    // Copy link helper
+    function copyProjectLink(url, name) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+          showToast(`📋 Đã sao chép link: ${name}`);
+        });
+      } else {
+        const tempInput = document.createElement('input');
+        tempInput.value = url;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        showToast(`📋 Đã sao chép link: ${name}`);
+      }
+    }
+
+    // Toast Notification
+    let toastTimer = null;
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2600);
+    }
+
+    // Theme Toggle
+    function initTheme() {
+      const savedTheme = localStorage.getItem('cnvui_theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeToggleBtn.textContent = '☀️';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeToggleBtn.textContent = '🌙';
+      }
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('cnvui_theme', 'light');
+        themeToggleBtn.textContent = '🌙';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('cnvui_theme', 'dark');
+        themeToggleBtn.textContent = '☀️';
+      }
+    });
+
+    // Search events
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      searchClearBtn.style.display = searchQuery ? 'block' : 'none';
+      renderCards();
+    });
+
+    searchClearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchQuery = '';
+      searchClearBtn.style.display = 'none';
+      searchInput.focus();
+      renderCards();
+    });
+
+    resetFilterBtn.addEventListener('click', resetAllFilters);
+
+    // Pill event listeners
+    document.getElementById('gradePills').addEventListener('click', (e) => {
+      const btn = e.target.closest('.pill-btn');
+      if (!btn) return;
+      document.querySelectorAll('#gradePills .pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedGrade = btn.dataset.grade;
+      renderCards();
+    });
+
+    document.getElementById('categoryPills').addEventListener('click', (e) => {
+      const btn = e.target.closest('.pill-btn');
+      if (!btn) return;
+      document.querySelectorAll('#categoryPills .pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedCategory = btn.dataset.category;
+      renderCards();
+    });
+
+    // Init
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    initTheme();
+    loadProjectsData();
+  </script>
+</body>
+</html>
