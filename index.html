@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Công Nghệ Vui — Thầy Nông Văn Hùng | THCS Đăk Ơ</title>
-  <meta name="description" content="Cổng học tập và trải nghiệm tương tác môn Công nghệ THCS (Lớp 8, Lớp 9) - Thầy Nông Văn Hùng, Trường THCS Đăk Ơ.">
+  <title>Công Nghệ Vui — Thầy Nông Văn Hùng | Ta Chia Sẻ Ai Cùng Tiến Bước</title>
+  <meta name="description" content="Cổng học tập và trải nghiệm tương tác môn Công nghệ THCS (Lớp 8, Lớp 9) - Thầy Nông Văn Hùng. Tham gia cộng đồng chia sẻ 'Ta chia sẻ Ai cùng tiến bước'.">
   <meta name="author" content="Thầy Nông Văn Hùng">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -29,8 +29,10 @@
       --brand-accent: #f59e0b;
       --brand-rose: #f43f5e;
       --brand-emerald: #10b981;
+      --brand-zalo: #0068ff;
+      --brand-zalo-hover: #0052cc;
       
-      --header-bg: rgba(255, 255, 255, 0.88);
+      --header-bg: rgba(255, 255, 255, 0.9);
       --badge-bg: #e0f2fe;
       --badge-text: #0369a1;
       
@@ -53,7 +55,7 @@
       --text-muted: #cbd5e1;
       --text-sub: #94a3b8;
       
-      --header-bg: rgba(30, 41, 59, 0.9);
+      --header-bg: rgba(30, 41, 59, 0.92);
       --badge-bg: #0c4a6e;
       --badge-text: #7dd3fc;
       
@@ -157,16 +159,36 @@
       color: var(--brand-primary);
       line-height: 1.2;
     }
-    .brand-school {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 500;
+    .brand-community {
+      font-size: 12.5px;
+      color: var(--brand-rose);
+      font-weight: 700;
+      letter-spacing: 0.2px;
     }
 
     .nav-actions {
       display: flex;
       align-items: center;
       gap: 10px;
+    }
+    .nav-zalo-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #0068ff, #0284c7);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0, 104, 255, 0.25);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .nav-zalo-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 104, 255, 0.35);
     }
     .theme-toggle-btn {
       background: var(--card-bg);
@@ -190,7 +212,7 @@
 
     /* Hero Section */
     .hero-section {
-      padding: 36px 0 28px;
+      padding: 36px 0 24px;
       text-align: center;
     }
     .hero-pill {
@@ -223,11 +245,78 @@
       -webkit-text-fill-color: transparent;
     }
     .hero-desc {
-      font-size: clamp(15px, 2.5vw, 17.5px);
+      font-size: clamp(15px, 2.5vw, 17px);
       color: var(--text-muted);
-      max-width: 720px;
+      max-width: 740px;
       margin: 0 auto 24px;
       font-weight: 500;
+    }
+
+    /* Community Invitation Banner */
+    .community-banner {
+      background: linear-gradient(135deg, rgba(0, 104, 255, 0.08) 0%, rgba(14, 165, 233, 0.12) 50%, rgba(245, 158, 11, 0.1) 100%);
+      border: 2px dashed #38bdf8;
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      margin: 0 auto 28px;
+      max-width: 860px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .community-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #0284c7;
+      color: #ffffff;
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+    }
+    .community-slogan {
+      font-family: var(--font-head);
+      font-size: clamp(20px, 3.5vw, 28px);
+      font-weight: 800;
+      color: #0369a1;
+      margin-bottom: 8px;
+    }
+    [data-theme="dark"] .community-slogan {
+      color: #38bdf8;
+    }
+    .community-text {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 16px;
+      line-height: 1.55;
+    }
+    .zalo-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #0068ff 0%, #0284c7 100%);
+      color: #ffffff;
+      padding: 12px 28px;
+      border-radius: var(--radius-full);
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(0, 104, 255, 0.35);
+      transition: all 0.25s ease;
+      touch-action: manipulation;
+    }
+    .zalo-cta-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 24px rgba(0, 104, 255, 0.45);
+      background: linear-gradient(135deg, #0052cc 0%, #0369a1 100%);
+    }
+    .zalo-cta-btn:active {
+      transform: translateY(0);
     }
 
     /* Stats strip */
@@ -611,34 +700,52 @@
       margin-top: auto;
       background: var(--header-bg);
       border-top: 1px solid var(--card-border);
-      padding: 32px 0 24px;
+      padding: 36px 0 28px;
       text-align: center;
       position: relative;
       z-index: 1;
     }
     .footer-brand {
       font-family: var(--font-head);
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 19px;
+      font-weight: 800;
       color: var(--brand-primary);
       margin-bottom: 6px;
     }
     .footer-desc {
-      font-size: 14px;
+      font-size: 14.5px;
       color: var(--text-muted);
-      max-width: 600px;
-      margin: 0 auto 16px;
+      max-width: 650px;
+      margin: 0 auto 18px;
     }
-    .footer-school-tag {
-      display: inline-block;
+    .footer-zalo-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
       background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 6px 16px;
-      border-radius: var(--radius-full);
+      border: 1.5px solid #38bdf8;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .footer-zalo-label {
       font-size: 13.5px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 16px;
+    }
+    .footer-zalo-link {
+      color: #0068ff;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14.5px;
+    }
+    .footer-zalo-link:hover {
+      text-decoration: underline;
     }
     .footer-copy {
       font-size: 13px;
@@ -648,7 +755,17 @@
     /* Responsive */
     @media (max-width: 640px) {
       .hero-section {
-        padding: 24px 0 20px;
+        padding: 24px 0 18px;
+      }
+      .nav-zalo-btn span {
+        display: none;
+      }
+      .nav-zalo-btn::after {
+        content: "Zalo";
+      }
+      .community-banner {
+        padding: 18px 14px;
+        margin-bottom: 22px;
       }
       .controls-wrapper {
         padding: 16px;
@@ -694,10 +811,13 @@
         <div class="avatar-badge">👨‍🏫</div>
         <div>
           <div class="brand-title">CÔNG NGHỆ VUI</div>
-          <div class="brand-school">Thầy Nông Văn Hùng · THCS Đăk Ơ</div>
+          <div class="brand-community">Thầy Nông Văn Hùng · Chia Sẻ Cùng Tiến Bước</div>
         </div>
       </a>
       <div class="nav-actions">
+        <a href="https://zalo.me/g/2vhbtmsqdr06gyfiuru8" target="_blank" rel="noopener noreferrer" class="nav-zalo-btn" title="Tham gia nhóm Zalo chia sẻ">
+          <span>💬 Tham gia nhóm Zalo</span>
+        </a>
         <button id="themeToggleBtn" class="theme-toggle-btn" title="Chuyển chế độ sáng/tối" aria-label="Toggle Theme">
           🌙
         </button>
@@ -712,18 +832,31 @@
     <header class="hero-section">
       <div class="hero-pill">
         <span>🌸</span>
-        <span>Góc Học Tập & Trải Nghiệm Công Nghệ THCS</span>
+        <span>Hệ Thống Học Liệu Số & Trải Nghiệm Công Nghệ THCS</span>
       </div>
       <h1 class="hero-title">Khám Phá Kỹ Thuật · Sáng Tạo Tương Lai</h1>
       <p class="hero-desc">
-        Chào mừng các em học sinh và Quý thầy cô đến với hệ thống bài giảng điện tử, trò chơi học tập, mô hình 3D và phòng thí nghiệm ảo môn Công nghệ.
+        Chào mừng Quý thầy cô, các bạn đồng nghiệp và các em học sinh đến với hệ thống bài giảng điện tử, trò chơi tương tác, mô hình 3D và phòng thực hành ảo môn Công nghệ.
       </p>
+
+      <!-- Community Invitation Banner (Zalo Group) -->
+      <section class="community-banner">
+        <div class="community-badge">🤝 CỘNG ĐỒNG KẾT NỐI & HỌC TẬP</div>
+        <h2 class="community-slogan">"Ta chia sẻ Ai cùng tiến bước"</h2>
+        <p class="community-text">
+          Thân mời Quý thầy cô, các em học sinh và những người yêu thích công nghệ giáo dục cùng tham gia nhóm để trao đổi học liệu số, giải pháp dạy học tương tác và cùng nhau tiến bước mỗi ngày!
+        </p>
+        <a href="https://zalo.me/g/2vhbtmsqdr06gyfiuru8" target="_blank" rel="noopener noreferrer" class="zalo-cta-btn">
+          <span>💬 Tham gia nhóm Zalo ngay</span>
+          <span>➔</span>
+        </a>
+      </section>
 
       <!-- Quick Stats -->
       <div class="stats-row">
         <div class="stat-chip">🚀 <span class="num" id="totalCountDisplay">7</span> Dự án tương tác</div>
         <div class="stat-chip">📚 <span class="num">Khối 8 & 9</span> Chuẩn SGK</div>
-        <div class="stat-chip">🏫 Trường THCS Đăk Ơ</div>
+        <div class="stat-chip">🤝 <span class="num">Cộng đồng</span> Học tập & Chia sẻ</div>
       </div>
     </header>
 
@@ -792,13 +925,19 @@
     <div class="container">
       <div class="footer-brand">HỆ THỐNG HỌC LIỆU SỐ — CÔNG NGHỆ VUI</div>
       <p class="footer-desc">
-        Xây dựng và phát triển nhằm hỗ trợ học sinh học tập chủ động, yêu thích kỹ thuật và rèn luyện kỹ năng thực hành công nghệ.
+        Xây dựng và chia sẻ hoàn toàn miễn phí nhằm khơi dậy tình yêu kỹ thuật số, hỗ trợ học sinh học tập chủ động và đồng hành cùng thầy cô đổi mới dạy học.
       </p>
-      <div class="footer-school-tag">
-        🏫 Thầy Nông Văn Hùng · Giáo viên Công nghệ · Trường THCS Đăk Ơ
+
+      <!-- Footer Zalo Link -->
+      <div class="footer-zalo-box">
+        <span class="footer-zalo-label">Tham gia cộng đồng cùng Thầy Nông Văn Hùng:</span>
+        <a href="https://zalo.me/g/2vhbtmsqdr06gyfiuru8" target="_blank" rel="noopener noreferrer" class="footer-zalo-link">
+          <span>💬 Nhóm Zalo: "Ta chia sẻ Ai cùng tiến bước"</span> ➔
+        </a>
       </div>
+
       <div class="footer-copy">
-        Bản quyền nội dung học liệu © <span id="currentYear"></span> · THCS Đăk Ơ, Bù Gia Mập, Bình Phước
+        Bản quyền nội dung học liệu © <span id="currentYear"></span> · Thầy Nông Văn Hùng · <em>"Ta chia sẻ Ai cùng tiến bước"</em>
       </div>
     </div>
   </footer>
