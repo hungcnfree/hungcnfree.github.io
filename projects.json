@@ -1,5 +1,27 @@
 [
   {
+    "id": "onthi2026",
+    "name": "Hệ Thống Quản Lý & Giao Đề Thi Tự Học 2026",
+    "lesson": "SchoolPop UI · Trộn Đề & Chấm Tự Luận",
+    "grade": "gv",
+    "category": "Hệ thống thi cử",
+    "icon": "📝",
+    "badge": "Mới nhất 2026 · Pastel Minimal",
+    "color": "#0d9488",
+    "desc": "Nền tảng thi trắc nghiệm 4 phần chuẩn Bộ GD&ĐT (Phần I, II, III, IV), nhận diện MathType/ChemDraw từ file Word, chấm tự luận bằng ảnh, live game P2P WebRTC và giao diện SchoolPop Pastel Minimal.",
+    "path": "https://hungcnfree.github.io/onthi2026/",
+    "tags": [
+      "thi tự học",
+      "trộn đề",
+      "mathtype",
+      "chemdraw",
+      "tự luận",
+      "schoolpop",
+      "bộ giáo dục",
+      "2026"
+    ]
+  },
+  {
     "id": "lbg-dongnai",
     "name": "Trợ Lý CSDL & Báo Giảng Tự Động",
     "lesson": "Dành cho Thầy/Cô Toàn Tỉnh",
