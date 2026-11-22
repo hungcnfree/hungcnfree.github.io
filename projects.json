@@ -24,13 +24,13 @@
   {
     "id": "lbg-dongnai",
     "name": "Trợ Lý CSDL & Báo Giảng Tự Động",
-    "lesson": "Dành cho Thầy/Cô Toàn Tỉnh",
+    "lesson": "Trường THCS Đăk Ơ · 1-Click Tự Động",
     "grade": "gv",
     "category": "Công cụ tiện ích",
-    "icon": "🌻",
-    "badge": "v5.3.4 · Hybrid & TKB Excel",
+    "icon": "⚡",
+    "badge": "v5.4.0 · 1-Click & TKB 60 GV",
     "color": "#10b981",
-    "desc": "Tiện ích Chrome tự động điền 100% Cấp học, Xã/Phường, Trường học và tài khoản CSDL. Hệ thống Hybrid thông minh: Nạp Excel TKB ở Tuần 1, tự động tính lũy kế PPCT và Kỹ năng Soi Tuần Cũ trên CSDL đối chiếu thực tế. Hoàn thành tuần trong 0.5s.",
+    "desc": "Tiện ích Chrome tự động điền 100% tài khoản CSDL và Lịch Báo Giảng 1-Click không cần hỏi han. Tích hợp sẵn TKB toàn trường (60 giáo viên), tự động nhận diện giáo viên đang đăng nhập và hoàn thành tuần trong 0.5s.",
     "path": "https://hungcnfree.github.io/lbg-dongnai/",
     "tags": [
       "csdl",
@@ -38,10 +38,9 @@
       "tiện ích chrome",
       "tự động hóa",
       "giáo viên",
-      "đồng nai",
-      "hoa hướng dương",
+      "thcs đăk ơ",
       "telerik",
-      "hybrid",
+      "1-click",
       "excel"
     ]
   },
