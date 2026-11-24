@@ -1,5 +1,31 @@
 [
   {
+    "id": "lms-quizizz",
+    "name": "LMS-QUIZIZZ · Quản Lý & Giao Đề Thi Tự Học 2026",
+    "lesson": "Pastel Minimal Dashboard · Phương Án B",
+    "grade": "gv",
+    "category": "Hệ thống thi cử",
+    "icon": "🎓",
+    "badge": "Mới nhất 2026 · Phương Án B",
+    "color": "#168C81",
+    "desc": "Hệ thống thi trắc nghiệm 4 phần chuẩn Bộ GD&ĐT (Phần I, II, III, IV), nhận diện MathType/ChemDraw, chấm tự luận bằng ảnh, live game P2P WebRTC và giao diện SchoolPop Pastel Minimal Dashboard (Phương Án B).",
+    "path": "https://hungcnfree.github.io/LMS-QUIZIZZ/",
+    "tags": [
+      "lms",
+      "quizizz",
+      "pastel minimal",
+      "phương án b",
+      "thi tự học",
+      "trộn đề",
+      "mathtype",
+      "chemdraw",
+      "tự luận",
+      "schoolpop",
+      "bộ giáo dục",
+      "2026"
+    ]
+  },
+  {
     "id": "onthi2026",
     "name": "Hệ Thống Quản Lý & Giao Đề Thi Tự Học 2026",
     "lesson": "SchoolPop UI · Trộn Đề & Chấm Tự Luận",
