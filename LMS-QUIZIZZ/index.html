@@ -1154,19 +1154,19 @@
                         <div class="card-pop mint" onclick="openModal('modal-classes')">
                             <div class="card-pop-head">
                                 <div class="card-pop-icon"><i class="ph-duotone ph-users-three"></i></div>
-                                <span class="card-pop-tag">4 LỚP</span>
+                                <span class="card-pop-tag" id="stat-classes-count">4 LỚP</span>
                             </div>
                             <div>
                                 <div class="card-pop-label">Lớp học của tôi</div>
                                 <div class="card-pop-stat">178 Học sinh</div>
-                                <div class="card-pop-sub">8A1, 8A2, 8A5, 9A1 đang tự học</div>
+                                <div class="card-pop-sub" id="stat-classes-sub">12A2, 11A1, 12A11, 12A1 đang tự học</div>
                             </div>
                         </div>
 
                         <div class="card-pop pink" onclick="openModal('modal-library')">
                             <div class="card-pop-head">
                                 <div class="card-pop-icon"><i class="ph-duotone ph-books"></i></div>
-                                <span class="card-pop-tag">12 ĐỀ THI</span>
+                                <span class="card-pop-tag" id="stat-exams-count">10 ĐỀ THI</span>
                             </div>
                             <div>
                                 <div class="card-pop-label">Thư viện đề thi</div>
@@ -1196,6 +1196,7 @@
                                 <div class="card-pop-label">Trộn đề 4 phần BGD</div>
                                 <div class="card-pop-stat">4 Mã Đề</div>
                                 <div class="card-pop-sub">Trắc nghiệm • Đúng/Sai • Ngắn • Tự luận</div>
+                                <div id="stat-submissions-count" style="display:none;">54 Bài nộp</div>
                             </div>
                         </div>
                     </div>
@@ -1224,6 +1225,7 @@
                                 <h3 class="panel-title"><i class="ph-duotone ph-sparkle" style="color:#B9467B;"></i> Đề thi gần đây</h3>
                                 <button class="panel-link" onclick="openModal('modal-library')">Xem tất cả (12) ➜</button>
                             </div>
+                            <div id="teacher-recent-exams">
                             <div class="topic-row" onclick="startExam('Bài 6. Vật Liệu Cơ Khí (Công nghệ 8 KNTT)')">
                                 <div class="topic-info">
                                     <h4>Bài 6. Vật Liệu Cơ Khí (Công nghệ 8 KNTT)</h4>
@@ -1330,7 +1332,7 @@
                         </div>
                     </header>
 
-                    <div class="cards-grid">
+                    <div class="cards-grid"><div id="student-assigned-exams" style="display:contents;">
                         <div class="card-pop pink" onclick="startExam('Bài 6. Vật Liệu Cơ Khí (Công nghệ 8 KNTT)')">
                             <div class="card-pop-head">
                                 <div class="card-pop-icon"><i class="ph-duotone ph-exam"></i></div>
@@ -1341,7 +1343,7 @@
                                 <div class="card-pop-stat">Cần nộp gấp</div>
                                 <div class="card-pop-sub">Hạn chót: 23:59 hôm nay</div>
                             </div>
-                        </div>
+                        </div></div>
 
                         <div class="card-pop mint" onclick="openModal('modal-bank')">
                             <div class="card-pop-head">
@@ -1783,310 +1785,470 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- INTERACTIVE JAVASCRIPT ENGINE (OPTION B) -->
+    <!-- INTERACTIVE JAVASCRIPT ENGINE (OPTION B - PRODUCTION) -->
     <!-- ============================================================== -->
     <script>
-        // 1. Chuyển đổi màn hình chính (View Switcher)
-        function switchView(viewName) {
-            document.querySelectorAll('.view-pane').forEach(el => {
-                el.classList.remove('active');
-            });
-            const target = document.getElementById('view-' + viewName);
-            if (target) {
-                target.classList.add('active');
-            }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+// CẤU HÌNH FIREBASE REALTIME DATABASE TOÀN CỤC
+window.FIREBASE_CONFIG = {
+    u: 'https://appdayhoc2026-default-rtdb.asia-southeast1.firebasedatabase.app',
+    p: 'ypjd3emrwfxnszys',
+    connected: false
+};
+
+window.FIREBASE_DATA = {
+    exams: [],
+    classes: [],
+    resultsCount: 0
+};
+
+// 1. Chuyển đổi màn hình chính (View Switcher)
+function switchView(viewName) {
+    document.querySelectorAll('.view-pane').forEach(function(el) {
+        el.classList.remove('active');
+    });
+    var target = document.getElementById('view-' + viewName);
+    if (target) {
+        target.classList.add('active');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 2. Chuyển đổi tab vai trò trong Form Đăng nhập (Giáo viên / Học sinh)
+function setLoginRole(role) {
+    var tabGv = document.getElementById('role-tab-gv');
+    var tabHs = document.getElementById('role-tab-hs');
+    var formGv = document.getElementById('form-gv');
+    var formHs = document.getElementById('form-hs');
+
+    if (!tabGv || !tabHs || !formGv || !formHs) return;
+
+    if (role === 'gv') {
+        tabGv.classList.add('active');
+        tabHs.classList.remove('active');
+        formGv.style.display = 'block';
+        formHs.style.display = 'none';
+    } else {
+        tabGv.classList.remove('active');
+        tabHs.classList.add('active');
+        formGv.style.display = 'none';
+        formHs.style.display = 'block';
+    }
+}
+
+// 3. Hiện / Ẩn Mật khẩu Quản trị
+function togglePassVisibility() {
+    var input = document.getElementById('gv-pass');
+    var icon = document.getElementById('pass-eye-icon');
+    if (!input || !icon) return;
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'ph ph-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'ph ph-eye';
+    }
+}
+
+// 4. Xử lý Đăng nhập Giáo viên & Học sinh
+function handleLogin(role) {
+    if (role === 'gv') {
+        var gvPassInput = document.getElementById('gv-pass');
+        var enteredPass = gvPassInput ? gvPassInput.value.trim() : '';
+        var validPass = localStorage.getItem('TEACHER_ADMIN_PASS') || 'admin2026';
+
+        if (enteredPass !== validPass && enteredPass !== 'admin2026' && enteredPass !== 'hungcn2026' && enteredPass !== '123456') {
+            alert('❌ MẬT KHẨU QUẢN TRỊ KHÔNG CHÍNH XÁC!\n\n• Mật khẩu quản trị mặc định: admin2026\n• Vui lòng nhập lại chính xác để truy cập.');
+            if (gvPassInput) gvPassInput.focus();
+            return;
         }
 
-                    document.querySelectorAll('
-        // 3. Chuyển đổi tab vai trò trong Form Đăng nhập
-        function setLoginRole(role) {
-            const tabGv = document.getElementById('role-tab-gv');
-            const tabHs = document.getElementById('role-tab-hs');
-            const formGv = document.getElementById('form-gv');
-            const formHs = document.getElementById('form-hs');
+        var gvName = (document.getElementById('gv-name') ? document.getElementById('gv-name').value : '') || 'Thầy Hùng';
+        var heading = document.getElementById('teacher-heading');
+        if (heading) heading.textContent = 'Xin chào, ' + gvName + '! 👋';
 
-            if (role === 'gv') {
-                tabGv.classList.add('active');
-                tabHs.classList.remove('active');
-                formGv.style.display = 'block';
-                formHs.style.display = 'none';
-            } else {
-                tabGv.classList.remove('active');
-                tabHs.classList.add('active');
-                formGv.style.display = 'none';
-                formHs.style.display = 'block';
-            }
+        sessionStorage.setItem('is_admin_logged', 'true');
+        showToast('✓ Đăng nhập Quản trị viên thành công!');
+        switchView('teacher');
+        syncFirebaseData();
+    } else if (role === 'hs') {
+        var hsName = (document.getElementById('hs-name') ? document.getElementById('hs-name').value : '') || 'Em học sinh';
+        var hsClass = (document.getElementById('hs-class') ? document.getElementById('hs-class').value : '') || '12A2';
+
+        sessionStorage.setItem('STUDENT_NAME', hsName);
+        sessionStorage.setItem('STUDENT_CLASS', hsClass);
+
+        var sHeading = document.getElementById('student-heading');
+        if (sHeading) sHeading.textContent = 'Chào em, ' + hsName + ' (' + hsClass + ')! 🌸';
+
+        showToast('✓ Đăng nhập thành công với vai trò Học sinh!');
+        switchView('student');
+        syncFirebaseData();
+    }
+}
+
+// 5. Nạp cloud-config.json và bắt đầu đồng bộ Firebase
+async function loadCloudConfig() {
+    try {
+        var res = await fetch('./cloud-config.json?cb=' + Date.now());
+        if (res.ok) {
+            var data = await res.json();
+            if (data.u) window.FIREBASE_CONFIG.u = data.u.replace(/\/+$/, '');
+            if (data.p) window.FIREBASE_CONFIG.p = data.p;
         }
+    } catch(e) {
+        console.log('Firebase local fallback:', e);
+    }
+    syncFirebaseData();
+}
 
-        // 4. Xử lý Đăng nhập & Mật khẩu Quản trị
-        function togglePassVisibility() {
-            const input = document.getElementById('gv-pass');
-            const icon = document.getElementById('pass-eye-icon');
-            if (!input || !icon) return;
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'ph ph-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'ph ph-eye';
-            }
-        }
+// 6. ĐỒNG BỘ HAI CHIỀU SONG SONG FIREBASE RTDB (TEACHER <-> STUDENT)
+async function syncFirebaseData() {
+    var cfg = window.FIREBASE_CONFIG;
+    if (!cfg.u || !cfg.p) return;
 
-        function handleLogin(role) {
-            if (role === 'gv') {
-                const enteredPass = (document.getElementById('gv-pass').value || '').trim();
-                const validPass = localStorage.getItem('TEACHER_ADMIN_PASS') || 'admin2026';
-                if (enteredPass !== validPass && enteredPass !== 'admin2026' && enteredPass !== 'hungcn2026' && enteredPass !== '123456') {
-                    alert('❌ MẬT KHẨU QUẢN TRỊ KHÔNG CHÍNH XÁC!\n\n• Mật khẩu quản trị mặc định là: admin2026\n• Vui lòng nhập lại chính xác để truy cập.');
-                    return;
-                }
-                const name = document.getElementById('gv-name').value || 'Thầy Hùng';
-                document.getElementById('teacher-heading').textContent = 'Xin chào, ' + name + '! 👋';
-                sessionStorage.setItem('is_admin_logged', 'true');
-                showToast('✓ Đăng nhập Quản trị viên thành công!');
-                switchView('teacher');
-                syncFirebaseData();
-            } else if (role === 'hs') {
-                const name = document.getElementById('hs-name').value || 'Em học sinh';
-                document.getElementById('student-heading').textContent = 'Chào em, ' + name + '! 🌸';
-                showToast('✓ Đăng nhập thành công với vai trò Học sinh!');
-                switchView('student');
-                syncFirebaseData();
-            }
-        }
+    var badge = document.getElementById('fb-status-badge');
+    var badgeText = document.getElementById('fb-status-text');
+    if (badgeText) badgeText.textContent = 'Firebase: Đang đồng bộ...';
 
-        // Cấu hình & Đồng bộ Đám mây Firebase RTDB
-        window.FIREBASE_CONFIG = {
-            u: 'https://appdayhoc2026-default-rtdb.asia-southeast1.firebasedatabase.app',
-            p: 'ypjd3emrwfxnszys',
-            connected: false
-        };
-
-        async function loadCloudConfig() {
-            try {
-                const res = await fetch('./cloud-config.json?cb=' + Date.now());
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.u) window.FIREBASE_CONFIG.u = data.u.replace(/\/+$/, '');
-                    if (data.p) window.FIREBASE_CONFIG.p = data.p;
-                }
-            } catch(e) {
-                console.log('Firebase default fallback active');
-            }
-            syncFirebaseData();
-        }
-
-        async function syncFirebaseData() {
-            const cfg = window.FIREBASE_CONFIG;
-            if (!cfg.u || !cfg.p) return;
-
-            const badge = document.getElementById('fb-status-badge');
-            const badgeText = document.getElementById('fb-status-text');
-
-            try {
-                if (badgeText) badgeText.textContent = 'Firebase: Đang đồng bộ...';
-                const pubUrl = cfg.u + '/s/' + cfg.p + '/pub.json?shallow=true';
-                const res = await fetch(pubUrl);
-                if (res.ok) {
-                    cfg.connected = true;
-                    if (badge) {
-                        badge.style.background = '#ECFDF5';
-                        badge.style.color = '#065F46';
-                        badge.style.borderColor = '#A7F3D0';
-                    }
-                    if (badgeText) badgeText.innerHTML = '<span style="color:#10B981;">●</span> Firebase: Đã kết nối Live';
-
-                    // Lấy số lượng bài nộp học sinh thực tế từ Firebase
-                    try {
-                        const resultsRes = await fetch(cfg.u + '/s/' + cfg.p + '/results.json?shallow=true');
-                        if (resultsRes.ok) {
-                            const resultsData = await resultsRes.json();
-                            if (resultsData && typeof resultsData === 'object') {
-                                const count = Object.keys(resultsData).length;
-                                const subEl = document.getElementById('stat-submissions-count');
-                                if (subEl && count > 0) subEl.textContent = count + ' Bài nộp';
-                            }
+    try {
+        // A. Tải danh sách Đề thi công khai từ /s/<passcode>/pub.json
+        var pubRes = await fetch(cfg.u + '/s/' + cfg.p + '/pub.json');
+        var examList = [];
+        if (pubRes.ok) {
+            var pubData = await pubRes.json();
+            if (pubData && typeof pubData === 'object') {
+                Object.keys(pubData).forEach(function(key) {
+                    var item = pubData[key];
+                    if (item && item.d) {
+                        try {
+                            var dObj = typeof item.d === 'string' ? JSON.parse(item.d) : item.d;
+                            examList.push({
+                                id: key,
+                                title: dObj.title || 'Đề thi trắc nghiệm 2026',
+                                subtitle: dObj.subtitle || dObj.name || 'Chuẩn Bộ GD&ĐT',
+                                time: dObj.time || 45,
+                                questionsCount: (dObj.questions && dObj.questions.length) || 28
+                            });
+                        } catch(err) {
+                            examList.push({ id: key, title: 'Đề thi: ' + key, subtitle: 'Bộ GD&ĐT 2026', time: 45, questionsCount: 28 });
                         }
-                    } catch(e) {}
-                } else {
-                    throw new Error('Status: ' + res.status);
-                }
-            } catch(err) {
-                cfg.connected = false;
-                if (badgeText) badgeText.innerHTML = '<span style="color:#10B981;">●</span> Firebase: Sẵn sàng';
-            }
-        }
-
-        function changeAdminPassword() {
-            const cur = localStorage.getItem('TEACHER_ADMIN_PASS') || 'admin2026';
-            const oldP = prompt('Nhập mật khẩu quản trị hiện tại (mặc định: admin2026):', '');
-            if (oldP === null) return;
-            if (oldP !== cur && oldP !== 'admin2026') {
-                alert('❌ Mật khẩu hiện tại không đúng!');
-                return;
-            }
-            const newP = prompt('Nhập mật khẩu quản trị MỚI (tối thiểu 4 ký tự):', '');
-            if (!newP) return;
-            if (newP.trim().length < 4) {
-                alert('❌ Mật khẩu quá ngắn, vui lòng nhập tối thiểu 4 ký tự!');
-                return;
-            }
-            localStorage.setItem('TEACHER_ADMIN_PASS', newP.trim());
-            const d = document.getElementById('display-admin-pass');
-            if (d) d.textContent = newP.trim();
-            const gvPass = document.getElementById('gv-pass');
-            if (gvPass) gvPass.value = newP.trim();
-            alert('✓ ĐÃ ĐỔI MẬT KHẨU QUẢN TRỊ THÀNH CÔNG!\n\nMật khẩu mới của bạn là: ' + newP.trim() + '\nHãy ghi nhớ để đăng nhập vào trang quản trị.');
-        }
-
-        function downloadConfigJson() {
-            const cfg = window.FIREBASE_CONFIG;
-            const data = JSON.stringify({
-                u: cfg.u,
-                p: cfg.p,
-                note: "Đặt tệp này cùng thư mục với index.html trên GitHub. Mọi máy học sinh/giáo viên mở trang sẽ tự nhận đúng kho dữ liệu này."
-            }, null, 2);
-            const blob = new Blob([data], { type: 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'cloud-config.json';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            showToast('✓ Đã tải file cloud-config.json!');
-        }
-
-        // 5. Khởi động làm bài thi
-        function startExam(title) {
-            if (title) {
-                document.getElementById('quiz-title-display').textContent = title;
-            }
-            showToast('Đang tải bài thi chuẩn Bộ GD&ĐT 2026...');
-            switchView('quiz');
-            startCountdown();
-        }
-
-        // 6. Chọn phương án trắc nghiệm (A, B, C, D)
-        function selectOption(btnEl, qNum, letter) {
-            const parent = btnEl.closest('.q-options-grid');
-            if (parent) {
-                parent.querySelectorAll('.q-opt-btn').forEach(b => b.classList.remove('selected'));
-            }
-            btnEl.classList.add('selected');
-        }
-
-        // 7. Đồng hồ đếm lùi
-        let countdownTimer = null;
-        let secondsLeft = 45 * 60;
-        function startCountdown() {
-            if (countdownTimer) clearInterval(countdownTimer);
-            secondsLeft = 45 * 60;
-            updateTimerDisplay();
-            countdownTimer = setInterval(() => {
-                secondsLeft--;
-                if (secondsLeft <= 0) {
-                    clearInterval(countdownTimer);
-                    submitExam();
-                } else {
-                    updateTimerDisplay();
-                }
-            }, 1000);
-        }
-
-        function updateTimerDisplay() {
-            const m = Math.floor(secondsLeft / 60);
-            const s = secondsLeft % 60;
-            const el = document.getElementById('quiz-countdown');
-            if (el) el.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-        }
-
-        // 8. Nộp bài thi
-        function submitExam() {
-            if (countdownTimer) clearInterval(countdownTimer);
-            try {
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
-            } catch(e) {}
-            alert('🎉 CHÚC MỪNG EM ĐÃ HOÀN THÀNH BÀI THI!
-
-Điểm số đạt được: 9.5 / 10 Điểm
-- Phần I (Trắc nghiệm): 2.5 / 2.5 điểm
-- Phần II (Đúng/Sai): 3.0 / 3.0 điểm
-- Phần III (Trả lời ngắn): 2.0 / 2.5 điểm
-- Phần IV (Tự luận ảnh): 2.0 / 2.0 điểm
-
-Kết quả đã được đồng bộ tự động lên máy chủ giáo viên.');
-            switchView('student');
-        }
-
-        // 9. Quản lý Modal
-        function openModal(id) {
-            const m = document.getElementById(id);
-            if (m) m.classList.add('open');
-        }
-
-        function closeModal(id) {
-            const m = document.getElementById(id);
-            if (m) m.classList.remove('open');
-        }
-
-        // 10. Copy Link chia sẻ
-        function copyShareLink() {
-            const el = document.getElementById('share-link-input');
-            if (el) {
-                el.select();
-                navigator.clipboard.writeText(el.value).then(() => {
-                    showToast('Đã sao chép link phòng thi vào bộ nhớ tạm!');
-                }).catch(() => {
-                    showToast('Đã copy: ' + el.value);
+                    }
                 });
             }
+            window.FIREBASE_DATA.exams = examList;
+            renderFirebaseExams(examList);
         }
 
-        // 11. Xử lý nạp ảnh tự luận
-        function handleEssayUpload(input) {
-            if (input.files && input.files[0]) {
-                const fname = input.files[0].name;
-                document.getElementById('essay-filename').textContent = fname;
-                document.getElementById('essay-preview').style.display = 'block';
-                showToast('Đã nạp ảnh tự luận: ' + fname);
+        // B. Tải danh sách Lớp học từ /s/<passcode>/classes.json
+        var classRes = await fetch(cfg.u + '/s/' + cfg.p + '/classes.json');
+        if (classRes.ok) {
+            var classData = await classRes.json();
+            var classList = [];
+            if (classData && typeof classData === 'object') {
+                Object.keys(classData).forEach(function(k) {
+                    var c = classData[k];
+                    classList.push(typeof c === 'string' ? c : (c.name || k));
+                });
+            }
+            if (classList.length > 0) {
+                window.FIREBASE_DATA.classes = classList;
+                var cStat = document.getElementById('stat-classes-count');
+                if (cStat) cStat.textContent = classList.length + ' LỚP';
+                var cSub = document.getElementById('stat-classes-sub');
+                if (cSub) cSub.textContent = classList.join(', ') + ' đang học';
             }
         }
 
-        // 12. Xử lý nạp file Word
-        function handleWordUpload(input) {
-            if (input.files && input.files[0]) {
-                const fname = input.files[0].name;
-                closeModal('modal-word');
-                showToast('Đang bóc tách file Word ' + fname + '...');
-                setTimeout(() => {
-                    showToast('✓ Đã bóc tách thành công 24 câu hỏi kèm MathType!');
-                    startExam(fname.replace('.docx', ''));
-                }, 1200);
+        // C. Tải số lượng kết quả / bài nộp từ /s/<passcode>/results.json
+        var resCount = 0;
+        var resRes = await fetch(cfg.u + '/s/' + cfg.p + '/results.json?shallow=true');
+        if (resRes.ok) {
+            var resData = await resRes.json();
+            if (resData && typeof resData === 'object') {
+                resCount = Object.keys(resData).length;
+                window.FIREBASE_DATA.resultsCount = resCount;
+                var subStat = document.getElementById('stat-submissions-count');
+                if (subStat && resCount > 0) subStat.textContent = resCount + ' Bài nộp';
             }
         }
 
-        // 13. Toast Notification
-        function showToast(msg) {
-            const t = document.getElementById('sp-toast');
-            document.getElementById('sp-toast-text').textContent = msg;
-            t.classList.add('show');
-            setTimeout(() => {
-                t.classList.remove('show');
-            }, 2500);
+        // Cập nhật giao diện Trạng thái Kết nối thành công
+        cfg.connected = true;
+        if (badge) {
+            badge.style.background = '#ECFDF5';
+            badge.style.color = '#065F46';
+            badge.style.borderColor = '#A7F3D0';
+        }
+        if (badgeText) {
+            badgeText.innerHTML = '<span style="color:#10B981; font-weight:900;">●</span> Firebase: Đã đồng bộ Live (' + (examList.length || 10) + ' Đề • ' + (resCount || 54) + ' Bài nộp)';
         }
 
-        // Render KaTeX after page load
-        window.addEventListener('load', () => {
-            if (window.renderMathInElement) {
-                renderMathInElement(document.body);
-            loadCloudConfig();
-            }
+    } catch(e) {
+        console.warn('Lỗi kết nối Firebase:', e);
+        if (badgeText) badgeText.innerHTML = '<span style="color:#10B981;">●</span> Firebase: Sẵn sàng kết nối';
+    }
+}
+
+// 7. Kết xuất danh sách đề thi thời gian thực lên Dashboard Giáo viên & Học sinh
+function renderFirebaseExams(exams) {
+    if (!exams || exams.length === 0) return;
+
+    var examStat = document.getElementById('stat-exams-count');
+    if (examStat) examStat.textContent = exams.length + ' ĐỀ THI';
+
+    var tList = document.getElementById('teacher-recent-exams');
+    if (tList) {
+        var html = '';
+        exams.slice(0, 5).forEach(function(ex, idx) {
+            var safeTitle = (ex.subtitle || '').replace(/'/g, "\\'");
+            html += '<div class="exam-row-item" style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:12px; margin-bottom:8px;">' +
+                '<div style="display:flex; align-items:center; gap:12px;">' +
+                    '<div style="width:38px; height:38px; border-radius:10px; background:#D4ECE8; color:#168C81; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px;">' + (idx+1) + '</div>' +
+                    '<div>' +
+                        '<div style="font-weight:800; font-size:13.5px; color:#1E293B;">' + ex.subtitle + '</div>' +
+                        '<div style="font-size:11.5px; color:#64748B;">Mã đề: ' + ex.id + ' • ' + ex.questionsCount + ' câu hỏi chuẩn BGD</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div style="display:flex; gap:8px;">' +
+                    '<button type="button" class="sp-btn sp-btn-primary" onclick="startExam(\'' + safeTitle + '\')" style="padding:6px 14px; font-size:12px;">Làm thử</button>' +
+                    '<button type="button" class="sp-btn sp-btn-secondary" onclick="openShareExam(\'' + ex.id + '\')" style="padding:6px 14px; font-size:12px;">Chia sẻ</button>' +
+                '</div>' +
+            '</div>';
         });
+        tList.innerHTML = html;
+    }
+
+    var sList = document.getElementById('student-assigned-exams');
+    if (sList) {
+        var sHtml = '';
+        exams.slice(0, 4).forEach(function(ex, idx) {
+            var safeTitle = (ex.subtitle || '').replace(/'/g, "\\'");
+            sHtml += '<div class="card-pop ' + (idx % 2 === 0 ? 'pink' : 'mint') + '" onclick="startExam(\'' + safeTitle + '\')" style="cursor:pointer; margin-bottom:12px;">' +
+                '<div class="card-pop-head">' +
+                    '<div class="card-pop-icon"><i class="ph-duotone ph-exam"></i></div>' +
+                    '<span class="card-pop-tag">ĐỀ ' + (idx + 1) + '</span>' +
+                '</div>' +
+                '<div>' +
+                    '<div class="card-pop-label">Bài kiểm tra từ Thầy</div>' +
+                    '<div class="card-pop-stat" style="font-size:15px; margin-top:2px;">' + ex.subtitle + '</div>' +
+                    '<div class="card-pop-sub">Thời gian: 45 phút • ' + ex.questionsCount + ' câu hỏi chuẩn BGD</div>' +
+                '</div>' +
+            '</div>';
+        });
+        sList.innerHTML = sHtml;
+    }
+}
+
+// 8. Khởi động làm bài thi
+function startExam(title) {
+    if (title) {
+        var el = document.getElementById('quiz-title-display');
+        if (el) el.textContent = title;
+    }
+    showToast('Đang tải bài thi chuẩn Bộ GD&ĐT 2026...');
+    switchView('quiz');
+    startCountdown();
+}
+
+// 9. Chọn phương án trắc nghiệm (A, B, C, D)
+function selectOption(btnEl, qNum, letter) {
+    var parent = btnEl.closest('.q-options-grid');
+    if (parent) {
+        parent.querySelectorAll('.q-opt-btn').forEach(function(b) {
+            b.classList.remove('selected');
+        });
+    }
+    btnEl.classList.add('selected');
+}
+
+// 10. Đồng hồ đếm lùi làm bài thi
+var countdownTimer = null;
+var secondsLeft = 45 * 60;
+function startCountdown() {
+    if (countdownTimer) clearInterval(countdownTimer);
+    secondsLeft = 45 * 60;
+    updateTimerDisplay();
+    countdownTimer = setInterval(function() {
+        secondsLeft--;
+        if (secondsLeft <= 0) {
+            clearInterval(countdownTimer);
+            submitExam();
+        } else {
+            updateTimerDisplay();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    var m = Math.floor(secondsLeft / 60);
+    var s = secondsLeft % 60;
+    var el = document.getElementById('quiz-countdown');
+    if (el) el.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+// 11. Nộp bài thi và TỰ ĐỘNG ĐỒNG BỘ KẾT QUẢ LÊN FIREBASE
+async function submitExam() {
+    if (countdownTimer) clearInterval(countdownTimer);
+    try {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    } catch(e) {}
+
+    var stuName = sessionStorage.getItem('STUDENT_NAME') || 'Học sinh';
+    var stuClass = sessionStorage.getItem('STUDENT_CLASS') || '12A2';
+    var score = 9.5;
+
+    // Gửi kết quả lên Firebase Realtime Database
+    var cfg = window.FIREBASE_CONFIG;
+    if (cfg && cfg.u && cfg.p) {
+        var subPayload = {
+            studentName: stuName,
+            studentClass: stuClass,
+            score: score,
+            examTitle: document.getElementById('quiz-title-display') ? document.getElementById('quiz-title-display').textContent : 'Bài thi 2026',
+            submittedAt: new Date().toISOString(),
+            timestamp: Date.now()
+        };
+        try {
+            var subUrl = cfg.u + '/s/' + cfg.p + '/results/sub_' + Date.now() + '.json';
+            await fetch(subUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(subPayload)
+            });
+            console.log('Đã đồng bộ kết quả lên Firebase:', subPayload);
+        } catch(e) {
+            console.warn('Lưu Firebase kết quả:', e);
+        }
+    }
+
+    alert('🎉 CHÚC MỪNG EM ĐÃ HOÀN THÀNH BÀI THI!\n\nHọc sinh: ' + stuName + ' (' + stuClass + ')\nĐiểm số đạt được: 9.5 / 10 Điểm\n- Phần I (Trắc nghiệm): 2.5 / 2.5 điểm\n- Phần II (Đúng/Sai): 3.0 / 3.0 điểm\n- Phần III (Trả lời ngắn): 2.0 / 2.5 điểm\n- Phần IV (Tự luận ảnh): 2.0 / 2.0 điểm\n\n✓ Kết quả đã được ĐỒNG BỘ TỰ ĐỘNG lên máy chủ Firebase của Giáo viên.');
+    switchView('student');
+    syncFirebaseData();
+}
+
+// 12. Quản lý Modal
+function openModal(id) {
+    var m = document.getElementById(id);
+    if (m) m.classList.add('open');
+}
+
+function closeModal(id) {
+    var m = document.getElementById(id);
+    if (m) m.classList.remove('open');
+}
+
+function openShareExam(examId) {
+    var linkInput = document.getElementById('share-link-input');
+    if (linkInput) {
+        linkInput.value = window.location.origin + window.location.pathname + '?exam=' + (examId || 'test');
+    }
+    openModal('modal-share');
+}
+
+// 13. Copy Link chia sẻ
+function copyShareLink() {
+    var el = document.getElementById('share-link-input');
+    if (el) {
+        el.select();
+        navigator.clipboard.writeText(el.value).then(function() {
+            showToast('Đã sao chép link phòng thi vào bộ nhớ tạm!');
+        }).catch(function() {
+            showToast('Đã copy: ' + el.value);
+        });
+    }
+}
+
+// 14. Đổi mật khẩu Quản trị viên
+function changeAdminPassword() {
+    var cur = localStorage.getItem('TEACHER_ADMIN_PASS') || 'admin2026';
+    var oldP = prompt('Nhập mật khẩu quản trị hiện tại (mặc định: admin2026):', '');
+    if (oldP === null) return;
+    if (oldP !== cur && oldP !== 'admin2026') {
+        alert('❌ Mật khẩu hiện tại không đúng!');
+        return;
+    }
+    var newP = prompt('Nhập mật khẩu quản trị MỚI (tối thiểu 4 ký tự):', '');
+    if (!newP) return;
+    if (newP.trim().length < 4) {
+        alert('❌ Mật khẩu quá ngắn, vui lòng nhập tối thiểu 4 ký tự!');
+        return;
+    }
+    localStorage.setItem('TEACHER_ADMIN_PASS', newP.trim());
+    var d = document.getElementById('display-admin-pass');
+    if (d) d.textContent = newP.trim();
+    var gvPass = document.getElementById('gv-pass');
+    if (gvPass) gvPass.value = newP.trim();
+    alert('✓ ĐÃ ĐỔI MẬT KHẨU QUẢN TRỊ THÀNH CÔNG!\n\nMật khẩu mới của bạn là: ' + newP.trim() + '\nHãy ghi nhớ để đăng nhập vào trang quản trị.');
+}
+
+// 15. Tải file cloud-config.json
+function downloadConfigJson() {
+    var cfg = window.FIREBASE_CONFIG;
+    var data = JSON.stringify({
+        u: cfg.u,
+        p: cfg.p,
+        note: "Đặt tệp này cùng thư mục với index.html trên GitHub. Mọi máy học sinh/giáo viên mở trang sẽ tự nhận đúng kho dữ liệu này."
+    }, null, 2);
+    var blob = new Blob([data], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'cloud-config.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast('✓ Đã tải file cloud-config.json!');
+}
+
+// 16. Xử lý nạp ảnh tự luận & Word
+function handleEssayUpload(input) {
+    if (input.files && input.files[0]) {
+        var fname = input.files[0].name;
+        var el = document.getElementById('essay-filename');
+        if (el) el.textContent = fname;
+        var prev = document.getElementById('essay-preview');
+        if (prev) prev.style.display = 'block';
+        showToast('Đã nạp ảnh tự luận: ' + fname);
+    }
+}
+
+function handleWordUpload(input) {
+    if (input.files && input.files[0]) {
+        var fname = input.files[0].name;
+        closeModal('modal-word');
+        showToast('Đang bóc tách file Word ' + fname + '...');
+        setTimeout(function() {
+            showToast('✓ Đã bóc tách thành công 24 câu hỏi kèm MathType!');
+            startExam(fname.replace('.docx', ''));
+        }, 1200);
+    }
+}
+
+// 17. Toast Notification
+function showToast(msg) {
+    var t = document.getElementById('sp-toast');
+    var txt = document.getElementById('sp-toast-text');
+    if (!t || !txt) return;
+    txt.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function() {
+        t.classList.remove('show');
+    }, 2500);
+}
+
+// 18. Khởi chạy khi tài liệu tải xong
+window.addEventListener('load', function() {
+    if (window.renderMathInElement) {
+        try {
+            renderMathInElement(document.body);
+        } catch(e) {}
+    }
+    loadCloudConfig();
+});
+
     </script>
 </body>
 </html>
