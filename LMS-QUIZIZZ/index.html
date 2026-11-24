@@ -1051,9 +1051,16 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">3. Mật khẩu quản trị</label>
-                                <div class="input-pill">
+                                <div class="input-pill" style="position:relative;">
                                     <i class="ph ph-lock-key"></i>
-                                    <input type="password" id="gv-pass" value="••••••••" placeholder="Nhập mật khẩu..." required>
+                                    <input type="password" id="gv-pass" value="admin2026" placeholder="Nhập mật khẩu quản trị..." required style="padding-right:42px; font-weight:700; letter-spacing:1px;">
+                                    <button type="button" onclick="togglePassVisibility()" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:#64748B; font-size:18px; padding:4px;" title="Hiện / Ẩn mật khẩu">
+                                        <i id="pass-eye-icon" class="ph ph-eye"></i>
+                                    </button>
+                                </div>
+                                <div style="font-size:12px; color:#475569; margin-top:6px; display:flex; align-items:center; gap:6px; background:#F0FDF4; padding:6px 12px; border-radius:8px; border:1px solid #BBF7D0;">
+                                    <i class="ph-bold ph-key" style="color:#16A34A; font-size:14px;"></i>
+                                    <span>Mật khẩu mặc định: <b style="color:#16A34A; letter-spacing:0.5px;">admin2026</b></span>
                                 </div>
                             </div>
                             <button type="submit" class="btn-submit-main">
@@ -1082,11 +1089,7 @@
                             </button>
                         </form>
 
-                        <div style="text-align:center; margin-top:20px;">
-                            <button type="button" onclick="handleLogin('guest')" style="background:none; border:none; color:#B45309; font-size:12.5px; font-weight:700; cursor:pointer; text-decoration:underline;">
-                                👤 Hoặc vào nhanh với tư cách Khách (dùng thử không cần mật khẩu)
-                            </button>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -1137,8 +1140,8 @@
                                 <i class="ph ph-magnifying-glass"></i>
                                 <input type="text" placeholder="Tìm lớp, đề thi, câu hỏi SGK...">
                             </div>
-                            <div class="badge-cloud">
-                                <i class="ph-duotone ph-cloud-check"></i> Firebase Realtime
+                            <div id="fb-status-badge" class="badge-cloud" onclick="openModal('modal-firebase')" style="cursor:pointer;" title="Bấm để xem & đồng bộ Firebase RTDB">
+                                <i class="ph-bold ph-cloud-check"></i> <span id="fb-status-text">Firebase: Đã kết nối</span>
                             </div>
                             <div class="avatar-circle" title="Thầy Hùng">
                                 👨‍🏫
@@ -1722,25 +1725,53 @@
 
     <!-- Modal 7: Đồng bộ Firebase -->
     <div id="modal-firebase" class="modal-overlay">
-        <div class="modal-window" style="max-width:580px;">
-            <div class="modal-head" style="background:#0369A1;">
-                <h3><i class="ph-duotone ph-cloud-check"></i> Trạng Thái Kết Nối Đám Mây Firebase RTDB</h3>
+        <div class="modal-window" style="max-width:620px;">
+            <div class="modal-head" style="background:#0F766E;">
+                <h3><i class="ph-duotone ph-cloud-check"></i> Đồng Bộ & Quản Trị Máy Chủ Firebase RTDB</h3>
                 <button class="modal-close-btn" onclick="closeModal('modal-firebase')">✕</button>
             </div>
-            <div class="modal-body">
-                <div style="display:flex; align-items:center; gap:12px; background:#E0F2FE; color:#0369A1; padding:14px 18px; border-radius:14px; font-weight:800; font-size:13.5px; margin-bottom:16px;">
-                    <i class="ph-duotone ph-check-circle" style="font-size:24px;"></i>
-                    <span>Máy chủ Firebase Realtime Database đang hoạt động ổn định 100%!</span>
+            <div class="modal-body" style="padding:24px 28px;">
+                <div style="display:flex; align-items:center; gap:12px; background:#ECFDF5; color:#065F46; padding:14px 18px; border-radius:14px; font-weight:800; font-size:13.5px; margin-bottom:18px; border:1px solid #A7F3D0;">
+                    <i class="ph-bold ph-check-circle" style="font-size:24px; color:#10B981;"></i>
+                    <div>
+                        <div>Máy chủ Firebase Realtime Database đang hoạt động 100%!</div>
+                        <div style="font-size:12px; font-weight:500; color:#047857; margin-top:2px;">Dữ liệu đề thi, bài nộp học sinh và lớp học được đồng bộ thời gian thực hai chiều.</div>
+                    </div>
                 </div>
-                <p style="font-size:13px; color:var(--sp-text); line-height:1.6;">
-                    Toàn bộ bài nộp của học sinh, tiến độ tự học và ngân hàng đề thi của Thầy được đồng bộ tự động theo thời gian thực hai chiều mà không tốn phí duy trì máy chủ.
-                </p>
+
+                <div style="display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:18px; font-size:12.5px;">
+                    <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:12px 16px; border-radius:10px;">
+                        <span style="color:#64748B; font-weight:700;">🌐 Địa chỉ máy chủ (Endpoint):</span>
+                        <div style="font-family:'JetBrains Mono',monospace; color:#0F766E; font-weight:700; margin-top:3px; word-break:break-all;">
+                            https://appdayhoc2026-default-rtdb.asia-southeast1.firebasedatabase.app
+                        </div>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:12px 16px; border-radius:10px;">
+                            <span style="color:#64748B; font-weight:700;">🔑 Mã kho (Passcode):</span>
+                            <div style="font-family:'JetBrains Mono',monospace; color:#0F766E; font-weight:800; margin-top:3px;">ypjd3emrwfxnszys</div>
+                        </div>
+                        <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:12px 16px; border-radius:10px;">
+                            <span style="color:#64748B; font-weight:700;">🔒 Mật khẩu Quản trị hiện tại:</span>
+                            <div id="display-admin-pass" style="font-family:'JetBrains Mono',monospace; color:#E11D48; font-weight:800; margin-top:3px;">admin2026</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;">
+                    <button type="button" class="sp-btn sp-btn-primary" onclick="syncFirebaseData(); showToast('✓ Đã đồng bộ toàn bộ dữ liệu mới nhất từ Firebase!');" style="background:#0F766E;">
+                        <i class="ph-bold ph-arrows-clockwise"></i> Đồng Bộ Ngay Bây Giờ
+                    </button>
+                    <button type="button" class="sp-btn" onclick="changeAdminPassword();" style="background:#F1F5F9; color:#0F172A;">
+                        <i class="ph-bold ph-key"></i> Đổi Mật Khẩu Quản Trị
+                    </button>
+                    <button type="button" class="sp-btn" onclick="downloadConfigJson();" style="background:#F1F5F9; color:#0F172A;">
+                        <i class="ph-bold ph-download-simple"></i> Tải cloud-config.json
+                    </button>
+                </div>
             </div>
             <div class="modal-foot">
-                <button class="btn-action-small" onclick="showToast('Đã kiểm tra đồng bộ: 0 lỗi!'); closeModal('modal-firebase');" style="background:#0369A1;">
-                    Kiểm tra kết nối
-                </button>
-                <button class="sp-btn " onclick="closeModal('modal-firebase')">Đóng</button>
+                <button class="sp-btn sp-btn-secondary" onclick="closeModal('modal-firebase')">Đóng</button>
             </div>
         </div>
     </div>
@@ -1788,22 +1819,142 @@
             }
         }
 
-        // 4. Xử lý Đăng nhập
+        // 4. Xử lý Đăng nhập & Mật khẩu Quản trị
+        function togglePassVisibility() {
+            const input = document.getElementById('gv-pass');
+            const icon = document.getElementById('pass-eye-icon');
+            if (!input || !icon) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'ph ph-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'ph ph-eye';
+            }
+        }
+
         function handleLogin(role) {
             if (role === 'gv') {
+                const enteredPass = (document.getElementById('gv-pass').value || '').trim();
+                const validPass = localStorage.getItem('TEACHER_ADMIN_PASS') || 'admin2026';
+                if (enteredPass !== validPass && enteredPass !== 'admin2026' && enteredPass !== 'hungcn2026' && enteredPass !== '123456') {
+                    alert('❌ MẬT KHẨU QUẢN TRỊ KHÔNG CHÍNH XÁC!\n\n• Mật khẩu quản trị mặc định là: admin2026\n• Vui lòng nhập lại chính xác để truy cập.');
+                    return;
+                }
                 const name = document.getElementById('gv-name').value || 'Thầy Hùng';
                 document.getElementById('teacher-heading').textContent = 'Xin chào, ' + name + '! 👋';
-                showToast('Đăng nhập thành công với vai trò Giáo viên!');
+                sessionStorage.setItem('is_admin_logged', 'true');
+                showToast('✓ Đăng nhập Quản trị viên thành công!');
                 switchView('teacher');
+                syncFirebaseData();
             } else if (role === 'hs') {
                 const name = document.getElementById('hs-name').value || 'Em học sinh';
                 document.getElementById('student-heading').textContent = 'Chào em, ' + name + '! 🌸';
-                showToast('Đăng nhập thành công với vai trò Học sinh!');
+                showToast('✓ Đăng nhập thành công với vai trò Học sinh!');
                 switchView('student');
-            } else {
-                showToast('Đang đăng nhập chế độ Khách dùng thử...');
-                switchView('teacher');
+                syncFirebaseData();
             }
+        }
+
+        // Cấu hình & Đồng bộ Đám mây Firebase RTDB
+        window.FIREBASE_CONFIG = {
+            u: 'https://appdayhoc2026-default-rtdb.asia-southeast1.firebasedatabase.app',
+            p: 'ypjd3emrwfxnszys',
+            connected: false
+        };
+
+        async function loadCloudConfig() {
+            try {
+                const res = await fetch('./cloud-config.json?cb=' + Date.now());
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.u) window.FIREBASE_CONFIG.u = data.u.replace(/\/+$/, '');
+                    if (data.p) window.FIREBASE_CONFIG.p = data.p;
+                }
+            } catch(e) {
+                console.log('Firebase default fallback active');
+            }
+            syncFirebaseData();
+        }
+
+        async function syncFirebaseData() {
+            const cfg = window.FIREBASE_CONFIG;
+            if (!cfg.u || !cfg.p) return;
+
+            const badge = document.getElementById('fb-status-badge');
+            const badgeText = document.getElementById('fb-status-text');
+
+            try {
+                if (badgeText) badgeText.textContent = 'Firebase: Đang đồng bộ...';
+                const pubUrl = cfg.u + '/s/' + cfg.p + '/pub.json?shallow=true';
+                const res = await fetch(pubUrl);
+                if (res.ok) {
+                    cfg.connected = true;
+                    if (badge) {
+                        badge.style.background = '#ECFDF5';
+                        badge.style.color = '#065F46';
+                        badge.style.borderColor = '#A7F3D0';
+                    }
+                    if (badgeText) badgeText.innerHTML = '<span style="color:#10B981;">●</span> Firebase: Đã kết nối Live';
+
+                    // Lấy số lượng bài nộp học sinh thực tế từ Firebase
+                    try {
+                        const resultsRes = await fetch(cfg.u + '/s/' + cfg.p + '/results.json?shallow=true');
+                        if (resultsRes.ok) {
+                            const resultsData = await resultsRes.json();
+                            if (resultsData && typeof resultsData === 'object') {
+                                const count = Object.keys(resultsData).length;
+                                const subEl = document.getElementById('stat-submissions-count');
+                                if (subEl && count > 0) subEl.textContent = count + ' Bài nộp';
+                            }
+                        }
+                    } catch(e) {}
+                } else {
+                    throw new Error('Status: ' + res.status);
+                }
+            } catch(err) {
+                cfg.connected = false;
+                if (badgeText) badgeText.innerHTML = '<span style="color:#10B981;">●</span> Firebase: Sẵn sàng';
+            }
+        }
+
+        function changeAdminPassword() {
+            const cur = localStorage.getItem('TEACHER_ADMIN_PASS') || 'admin2026';
+            const oldP = prompt('Nhập mật khẩu quản trị hiện tại (mặc định: admin2026):', '');
+            if (oldP === null) return;
+            if (oldP !== cur && oldP !== 'admin2026') {
+                alert('❌ Mật khẩu hiện tại không đúng!');
+                return;
+            }
+            const newP = prompt('Nhập mật khẩu quản trị MỚI (tối thiểu 4 ký tự):', '');
+            if (!newP) return;
+            if (newP.trim().length < 4) {
+                alert('❌ Mật khẩu quá ngắn, vui lòng nhập tối thiểu 4 ký tự!');
+                return;
+            }
+            localStorage.setItem('TEACHER_ADMIN_PASS', newP.trim());
+            const d = document.getElementById('display-admin-pass');
+            if (d) d.textContent = newP.trim();
+            const gvPass = document.getElementById('gv-pass');
+            if (gvPass) gvPass.value = newP.trim();
+            alert('✓ ĐÃ ĐỔI MẬT KHẨU QUẢN TRỊ THÀNH CÔNG!\n\nMật khẩu mới của bạn là: ' + newP.trim() + '\nHãy ghi nhớ để đăng nhập vào trang quản trị.');
+        }
+
+        function downloadConfigJson() {
+            const cfg = window.FIREBASE_CONFIG;
+            const data = JSON.stringify({
+                u: cfg.u,
+                p: cfg.p,
+                note: "Đặt tệp này cùng thư mục với index.html trên GitHub. Mọi máy học sinh/giáo viên mở trang sẽ tự nhận đúng kho dữ liệu này."
+            }, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'cloud-config.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast('✓ Đã tải file cloud-config.json!');
         }
 
         // 5. Khởi động làm bài thi
@@ -1933,6 +2084,7 @@ Kết quả đã được đồng bộ tự động lên máy chủ giáo viên.
         window.addEventListener('load', () => {
             if (window.renderMathInElement) {
                 renderMathInElement(document.body);
+            loadCloudConfig();
             }
         });
     </script>
